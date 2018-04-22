@@ -564,6 +564,8 @@ static void register_all(void)
     REGISTER_ENCODER(LIBX264RGB,        libx264rgb);
     REGISTER_ENCODER(LIBX265,           libx265);
     REGISTER_ENCODER(LIBXAVS,           libxavs);
+    REGISTER_ENCODER(LIBXAVS2,          libxavs2);
+    REGISTER_DECODER(LIBDAVS2,          libdavs2);
     REGISTER_ENCODER(LIBXVID,           libxvid);
     REGISTER_DECODER(LIBZVBI_TELETEXT,  libzvbi_teletext);
 
@@ -625,6 +627,7 @@ static void register_all(void)
     REGISTER_PARSER(ADX,                adx);
     REGISTER_PARSER(BMP,                bmp);
     REGISTER_PARSER(CAVSVIDEO,          cavsvideo);
+    REGISTER_PARSER(CAVS2VIDEO,         cavs2video);
     REGISTER_PARSER(COOK,               cook);
     REGISTER_PARSER(DCA,                dca);
     REGISTER_PARSER(DIRAC,              dirac);

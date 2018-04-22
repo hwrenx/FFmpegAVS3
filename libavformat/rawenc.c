@@ -116,7 +116,18 @@ AVOutputFormat ff_cavsvideo_muxer = {
     .flags             = AVFMT_NOTIMESTAMPS,
 };
 #endif
-
+#if CONFIG_CAVS2VIDEO_MUXER
+AVOutputFormat ff_cavs2video_muxer = {
+    .name              = "cavs2video",
+    .long_name         = NULL_IF_CONFIG_SMALL("raw Chinese AVS2 (Audio Video Standard) video"),
+    .extensions        = "avs2",
+    .audio_codec       = AV_CODEC_ID_NONE,
+    .video_codec       = AV_CODEC_ID_AVS2,
+    .write_header      = force_one_stream,
+    .write_packet      = ff_raw_write_packet,
+    .flags             = AVFMT_NOTIMESTAMPS,
+};
+#endif
 #if CONFIG_DATA_MUXER
 AVOutputFormat ff_data_muxer = {
     .name              = "data",

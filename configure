@@ -273,6 +273,8 @@ External library support:
   --enable-libx264         enable H.264 encoding via x264 [no]
   --enable-libx265         enable HEVC encoding via x265 [no]
   --enable-libxavs         enable AVS encoding via xavs [no]
+  --enable-libxavs2        enable AVS2 encoding via xavs2 [no]
+  --enable-libdavs2        enable AVS2 decoding via davs2 [no]
   --enable-libxcb          enable X11 grabbing using XCB [autodetect]
   --enable-libxcb-shm      enable X11 grabbing shm communication [autodetect]
   --enable-libxcb-xfixes   enable X11 grabbing mouse rendering [autodetect]
@@ -1558,6 +1560,8 @@ EXTERNAL_LIBRARY_GPL_LIST="
     libx264
     libx265
     libxavs
+    libxavs2
+    libdavs2
     libxvid
 "
 
@@ -2985,6 +2989,8 @@ libx264rgb_encoder_deps="libx264 x264_csp_bgr"
 libx264rgb_encoder_select="libx264_encoder"
 libx265_encoder_deps="libx265"
 libxavs_encoder_deps="libxavs"
+libxavs2_encoder_deps="libxavs2"
+libdavs2_decoder_deps="libdavs2"
 libxvid_encoder_deps="libxvid"
 libzvbi_teletext_decoder_deps="libzvbi"
 videotoolbox_suggest="coreservices"
@@ -5952,6 +5958,12 @@ enabled libx264           && { check_pkg_config libx264 x264 "stdint.h x264.h" x
 enabled libx265           && require_pkg_config libx265 x265 x265.h x265_api_get &&
                              require_cpp_condition x265.h "X265_BUILD >= 68"
 enabled libxavs           && require libxavs "stdint.h xavs.h" xavs_encoder_encode "-lxavs $pthreads_extralibs $libm_extralibs"
+enabled libxavs2             && require_pkg_config libxavs2 xavs2 "stdint.h xavs2.h" xavs2_api_get &&
+                             { check_cpp_condition xavs2.h "XAVS2_BUILD >= 12" ||
+                              die "ERROR: xavs2 version must be >= 12." ; }
+enabled libdavs2             && require_pkg_config libdavs2 davs2 "stdint.h davs2.h" davs2_decoder_decode &&
+                             { check_cpp_condition davs2.h "DAVS2_BUILD >= 12" ||
+                              die "ERROR: libdavs2 version must be >= 12." ; }
 enabled libxvid           && require libxvid xvid.h xvid_global -lxvidcore
 enabled libzimg           && require_pkg_config libzimg "zimg >= 2.7.0" zimg.h zimg_get_api_version
 enabled libzmq            && require_pkg_config libzmq libzmq zmq.h zmq_ctx_new

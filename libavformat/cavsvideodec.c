@@ -18,7 +18,7 @@
  * License along with FFmpeg; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
+#include "ctype.h"
 #include "avformat.h"
 #include "rawdec.h"
 #include "libavcodec/internal.h"
@@ -66,4 +66,46 @@ static int cavsvideo_probe(AVProbeData *p)
     return 0;
 }
 
+static int cavs2video_probe(AVProbeData *p)
+{
+    uint32_t code= -1;
+    int pic=0, seq=0, slice_pos = 0;
+    int i;
+    int ret = 0;
+
+    for(i=0; i<p->buf_size; i++){
+        code = (code<<8) + p->buf[i];
+        if ((code & 0xffffff00) == 0x100) {
+            if(code < CAVS_SEQ_START_CODE) {
+                /* slices have to be consecutive */
+                if(code < slice_pos)
+                    return 0;
+                slice_pos = code;
+            } else {
+                slice_pos = 0;
+            }
+            if (code == CAVS_SEQ_START_CODE) {
+                seq++;
+                /* check for the only currently supported profile */
+                if(p->buf[i+1] != CAVS_PROFILE_JIZHUN)
+                    return 0;
+            } else if ((code == CAVS_PIC_I_START_CODE) ||
+                       (code == CAVS_PIC_PB_START_CODE)) {
+                pic++;
+            } else if ((code == CAVS_UNDEF_START_CODE) ||
+                       (code >  CAVS_VIDEO_EDIT_CODE)) {
+                return 0;
+            }
+        }
+    }
+    if(seq && pic) {
+        const char *str = p->filename + strlen(p->filename) - 5;
+        if (tolower(str[0]) == 'x' && tolower(str[1]) == 'a' && tolower(str[2]) == 'v' &&tolower(str[3]) == 's' && str[4] == '2') {
+            ret = AVPROBE_SCORE_EXTENSION + 2;
+        }
+    }
+    return ret;
+}
+
 FF_DEF_RAWVIDEO_DEMUXER(cavsvideo, "raw Chinese AVS (Audio Video Standard)", cavsvideo_probe, NULL, AV_CODEC_ID_CAVS)
+FF_DEF_RAWVIDEO_DEMUXER(cavs2video, "raw Chinese AVS2 (Audio Video Standard)", cavs2video_probe, "avs2", AV_CODEC_ID_AVS2)
