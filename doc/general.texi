@@ -125,6 +125,14 @@ Go to @url{https://github.com/pkuvcl/davs2} and follow the instructions for
 installing the library. Then pass @code{--enable-libdavs2} to configure to
 enable it.
 
+@section uavs3d
+
+FFmpeg can make use of the uavs3d library for AVS3-P2/IEEE1857.10 video decoding.
+
+Go to @url{https://github.com/uavs3/uavs3d} and follow the instructions for
+installing the library. Then pass @code{--enable-libuavs3d} to configure to
+enable it.
+
 @float NOTE
 libdavs2 is under the GNU Public License Version 2 or later
 (see @url{http://www.gnu.org/licenses/old-licenses/gpl-2.0.html} for
