@@ -75,6 +75,7 @@ version <next>:
 - PFM decoder
 - dblur video filter
 - Real War KVAG muxer
+- AVS3 video decoder via libuavs3d
 
 
 version 4.2:
