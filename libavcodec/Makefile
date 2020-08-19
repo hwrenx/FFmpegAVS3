@@ -6,6 +6,7 @@ HEADERS = ac3_parser.h                                                  \
           avcodec.h                                                     \
           avdct.h                                                       \
           avfft.h                                                       \
+          avs3.h                                                        \
           bsf.h                                                         \
           codec.h                                                       \
           codec_desc.h                                                  \
@@ -32,6 +33,7 @@ OBJS = ac3_parser.o                                                     \
        avdct.o                                                          \
        avpacket.o                                                       \
        avpicture.o                                                      \
+       avs3.o                                                           \
        bitstream.o                                                      \
        bitstream_filter.o                                               \
        bitstream_filters.o                                              \
